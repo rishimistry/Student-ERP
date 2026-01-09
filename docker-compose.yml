@@ -7,32 +7,12 @@ services:
       - "8080:8080"
     environment:
       - PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/studentportal
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
-    depends_on:
-      db:
-        condition: service_healthy
+      # For Neon: replace with your actual Neon credentials
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ep-fragrant-term-a1qix6kk-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+      - SPRING_DATASOURCE_USERNAME=neondb_owner
+      - SPRING_DATASOURCE_PASSWORD=npg_Gjm6tloF3eSg
     volumes:
       - uploads:/app/uploads
 
-  db:
-    image: postgres:16-alpine
-    environment:
-      - POSTGRES_DB=studentportal
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
 volumes:
-  postgres_data:
   uploads:
