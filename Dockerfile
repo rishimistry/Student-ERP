@@ -2,17 +2,16 @@
 FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml first for dependency caching
-COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw .
+# Install Maven
+RUN apk add --no-cache maven
 
-# Make mvnw executable and download dependencies
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+# Copy pom.xml first for dependency caching
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
 
 # Copy source code and build
 COPY src ./src
-RUN ./mvnw package -DskipTests -B
+RUN mvn package -DskipTests -B
 
 # Run stage - slim JRE for performance
 FROM eclipse-temurin:17-jre-alpine
