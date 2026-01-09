@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Subjects')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: hod-sidebar('subjects')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Subjects')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Subjects')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Subject List</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${subjects != null and !subjects.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Sem</th>
+                                        <th>Cr</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="subject : ${subjects}">
+                                        <td th:text="${subject.subjectCode}">CS101</td>
+                                        <td th:text="${subject.subjectName}">Name</td>
+                                        <td th:text="${subject.semester}">1</td>
+                                        <td th:text="${subject.creditHours}">3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${subjects == null or subjects.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                            <h3>No subjects found</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: hod-bottom-nav('subjects')}"></nav>
+        <div th:replace="~{fragments/layout :: hod-mobile-menu('subjects')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

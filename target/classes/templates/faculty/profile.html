@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Profile')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: faculty-sidebar('profile')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Profile')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Profile')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-body" style="text-align: center; padding: 24px;">
+                        <div class="profile-avatar-large">
+                            <span th:text="${#strings.substring(user.fullName, 0, 1)}">F</span>
+                        </div>
+                        <h2 style="margin: 12px 0 4px; font-size: 1.25rem;" th:text="${user.fullName}">Name</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.875rem;" th:text="${faculty?.designation ?: 'Faculty'}">Designation</p>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Information</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div class="info-list">
+                            <div class="info-list-item">
+                                <span class="info-list-label">Employee ID</span>
+                                <span class="info-list-value" th:text="${faculty?.employeeId ?: '-'}">-</span>
+                            </div>
+                            <div class="info-list-item">
+                                <span class="info-list-label">Email</span>
+                                <span class="info-list-value" th:text="${user.email}">-</span>
+                            </div>
+                            <div class="info-list-item">
+                                <span class="info-list-label">Phone</span>
+                                <span class="info-list-value" th:text="${faculty?.phone ?: '-'}">-</span>
+                            </div>
+                            <div class="info-list-item">
+                                <span class="info-list-label">Department</span>
+                                <span class="info-list-value" th:text="${faculty?.department ?: '-'}">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: faculty-bottom-nav('profile')}"></nav>
+        <div th:replace="~{fragments/layout :: faculty-mobile-menu('profile')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

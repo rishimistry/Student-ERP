@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Pending Registrations')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('registrations')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Registrations')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Pending Registrations')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <!-- Pending Students -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pending Student Registrations</h3>
+                        <span class="badge badge-warning" th:text="${#lists.size(pendingStudents)} + ' pending'">0 pending</span>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${pendingStudents != null and !pendingStudents.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="student : ${pendingStudents}">
+                                        <td th:text="${student.rollNumber}">CS001</td>
+                                        <td th:text="${student.user.fullName}">Name</td>
+                                        <td th:text="${student.user.email}">email@example.com</td>
+                                        <td th:text="${student.department}">Dept</td>
+                                        <td>
+                                            <div style="display: flex; gap: 8px;">
+                                                <form th:action="@{/admin/registrations/student/{id}/approve(id=${student.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                </form>
+                                                <form th:action="@{/admin/registrations/student/{id}/reject(id=${student.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to reject this registration?')">Reject</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${pendingStudents == null or pendingStudents.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <h3>No pending student registrations</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pending Faculty -->
+                <div class="card" style="margin-top: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Pending Faculty Registrations</h3>
+                        <span class="badge badge-warning" th:text="${#lists.size(pendingFaculty)} + ' pending'">0 pending</span>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${pendingFaculty != null and !pendingFaculty.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="faculty : ${pendingFaculty}">
+                                        <td th:text="${faculty.employeeId}">FAC001</td>
+                                        <td th:text="${faculty.user.fullName}">Name</td>
+                                        <td th:text="${faculty.user.email}">email@example.com</td>
+                                        <td th:text="${faculty.department}">Dept</td>
+                                        <td th:text="${faculty.designation}">Prof</td>
+                                        <td>
+                                            <div style="display: flex; gap: 8px;">
+                                                <form th:action="@{/admin/registrations/faculty/{id}/approve(id=${faculty.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                                </form>
+                                                <form th:action="@{/admin/registrations/faculty/{id}/reject(id=${faculty.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to reject this registration?')">Reject</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${pendingFaculty == null or pendingFaculty.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <h3>No pending faculty registrations</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('registrations')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('registrations')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Marks')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: faculty-sidebar('marks')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Marks')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Marks')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Enter Marks</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Subject</label>
+                                <select class="form-control">
+                                    <option value="">Select Subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}" th:text="${subject.subjectName}">Subject</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Exam Type</label>
+                                <select class="form-control">
+                                    <option value="">Select Exam Type</option>
+                                    <option value="MIDTERM">Midterm</option>
+                                    <option value="FINAL">Final</option>
+                                    <option value="ASSIGNMENT">Assignment</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Load Students</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: faculty-bottom-nav('marks')}"></nav>
+        <div th:replace="~{fragments/layout :: faculty-mobile-menu('marks')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

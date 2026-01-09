@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Student Details')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('students')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Student Details')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Student Details')}"></header>
+            
+            <div class="page-content">
+                <div class="card" style="max-width: 800px;">
+                    <div class="card-header">
+                        <h3 class="card-title" th:text="${student.fullName}">Student Name</h3>
+                        <a th:href="@{/admin/students/edit/{id}(id=${student.id})}" class="btn btn-primary btn-sm">Edit</a>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Roll Number</p>
+                                <p style="font-weight: 500;" th:text="${student.rollNumber}">CS001</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Email</p>
+                                <p style="font-weight: 500;" th:text="${student.email}">email@example.com</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Department</p>
+                                <p style="font-weight: 500;" th:text="${student.department}">Computer Science</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Semester</p>
+                                <p style="font-weight: 500;" th:text="${student.semester}">1</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Phone</p>
+                                <p style="font-weight: 500;" th:text="${student.phone ?: 'Not provided'}">1234567890</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Date of Birth</p>
+                                <p style="font-weight: 500;" th:text="${student.dateOfBirth != null} ? ${#temporals.format(student.dateOfBirth, 'MMM dd, yyyy')} : 'Not provided'">Jan 01, 2000</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Admission Year</p>
+                                <p style="font-weight: 500;" th:text="${student.admissionYear ?: 'Not provided'}">2024</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Guardian Name</p>
+                                <p style="font-weight: 500;" th:text="${student.guardianName ?: 'Not provided'}">Guardian</p>
+                            </div>
+                            <div style="grid-column: span 2;">
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Address</p>
+                                <p style="font-weight: 500;" th:text="${student.address ?: 'Not provided'}">Address</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                            <a th:href="@{/admin/students}" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('students')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('students')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

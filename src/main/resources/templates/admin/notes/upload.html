@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Upload Note')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('notes')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Upload Note')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Upload Note')}"></header>
+            
+            <div class="page-content">
+                <div th:if="${error}" class="alert alert-danger">
+                    <span th:text="${error}">Error</span>
+                </div>
+                
+                <div class="card" style="max-width: 600px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Upload New Note</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/notes/upload}" th:object="${note}" method="post" enctype="multipart/form-data">
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="title">Title *</label>
+                                <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Enter note title">
+                                <div th:if="${#fields.hasErrors('title')}" class="form-error" th:errors="*{title}">Error</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="description">Description</label>
+                                <textarea id="description" th:field="*{description}" class="form-control" rows="3" placeholder="Brief description of the note"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="subjectId">Subject *</label>
+                                <select id="subjectId" th:field="*{subjectId}" class="form-control" required>
+                                    <option value="">Select Subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}" 
+                                            th:text="${subject.subjectCode + ' - ' + subject.subjectName}">Subject</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('subjectId')}" class="form-error" th:errors="*{subjectId}">Error</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="file">PDF File *</label>
+                                <input type="file" id="file" name="file" class="form-control" accept=".pdf" required>
+                                <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 4px;">Only PDF files are allowed. Max size: 10MB</p>
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                <button type="submit" class="btn btn-primary">Upload Note</button>
+                                <a th:href="@{/admin/notes}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('notes')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('notes')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

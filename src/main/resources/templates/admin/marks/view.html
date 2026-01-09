@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('View Marks')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('marks')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('View Marks')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('View Marks')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Select Student</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/marks/view}" method="get" class="student-select-form">
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label" for="studentId">Student</label>
+                                <select id="studentId" name="studentId" class="form-control">
+                                    <option value="">Select Student</option>
+                                    <option th:each="student : ${students}" th:value="${student.id}" 
+                                            th:text="${student.rollNumber + ' - ' + student.user.fullName}"
+                                            th:selected="${selectedStudent != null and selectedStudent.id == student.id}">Student</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">View Marks</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;" th:if="${marks != null}">
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px;" th:text="${selectedStudent.fullName + ' - Marks'}">Student Marks</h3>
+                    
+                    <!-- Mobile Card View -->
+                    <div th:if="${marks != null and !#lists.isEmpty(marks)}">
+                        <div th:each="mark : ${marks}" class="card" style="margin-bottom: 12px;">
+                            <div class="card-body" style="padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; font-size: 1rem; margin-bottom: 4px;" th:text="${mark.subjectName}">Subject</div>
+                                        <div style="font-size: 0.8125rem; color: var(--text-secondary);" th:text="${mark.examType}">Mid Term</div>
+                                    </div>
+                                    <form th:action="@{/admin/marks/delete/{id}(id=${mark.id})}" method="post" style="display: inline;" 
+                                          onsubmit="return confirm('Delete this mark record?');">
+                                        <button type="submit" class="btn btn-danger btn-sm btn-icon" title="Delete">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <span style="font-size: 0.875rem; color: var(--text-secondary);">Marks</span>
+                                    <span style="font-weight: 600;" th:text="${mark.marksObtained + ' / ' + mark.maxMarks}">85 / 100</span>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="progress" style="flex: 1;">
+                                        <div class="progress-bar" 
+                                             th:classappend="${mark.percentage >= 60} ? 'success' : (${mark.percentage >= 40} ? 'warning' : 'danger')"
+                                             th:style="'width: ' + ${mark.percentage} + '%'"></div>
+                                    </div>
+                                    <span style="font-size: 0.875rem; font-weight: 500; min-width: 45px; text-align: right;" th:text="${#numbers.formatDecimal(mark.percentage, 1, 1) + '%'}">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div th:if="${#lists.isEmpty(marks)}" class="card">
+                        <div class="empty-state">
+                            <p>No marks recorded for this student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('marks')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('marks')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

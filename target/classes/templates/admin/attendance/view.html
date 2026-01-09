@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('View Attendance')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('attendance')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('View Attendance')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('View Attendance')}"></header>
+            
+            <div class="page-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Filter Records</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/admin/attendance/view}" method="get" class="filter-form">
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label" for="studentId">Student</label>
+                                <select id="studentId" name="studentId" class="form-control">
+                                    <option value="">Select Student</option>
+                                    <option th:each="student : ${students}" th:value="${student.id}" 
+                                            th:text="${student.rollNumber + ' - ' + student.user.fullName}"
+                                            th:selected="${selectedStudent != null and selectedStudent.id == student.id}">Student</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label" for="subjectId">Subject</label>
+                                <select id="subjectId" name="subjectId" class="form-control">
+                                    <option value="">Select Subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}" 
+                                            th:text="${subject.subjectCode + ' - ' + subject.subjectName}"
+                                            th:selected="${selectedSubject != null and selectedSubject.id == subject.id}">Subject</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Filter</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Attendance Records - Mobile Friendly Cards -->
+                <div style="margin-top: 20px;" th:if="${records != null}">
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px;">Attendance Records</h3>
+                    
+                    <div th:if="${records != null and !#lists.isEmpty(records)}">
+                        <div th:each="record : ${records}" class="card" style="margin-bottom: 12px;">
+                            <div class="card-body" style="padding: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600; font-size: 1rem; margin-bottom: 4px;" th:text="${record.subjectName}">Subject</div>
+                                        <div style="font-size: 0.8125rem; color: var(--text-secondary);" th:text="${#temporals.format(record.date, 'MMM dd, yyyy')}">Jan 01, 2024</div>
+                                    </div>
+                                    <span class="badge" 
+                                          th:classappend="${record.status.name() == 'PRESENT'} ? 'badge-success' : (${record.status.name() == 'LATE'} ? 'badge-warning' : 'badge-danger')"
+                                          th:text="${record.status}">Status</span>
+                                </div>
+                                
+                                <div th:if="${record.remarks != null and !#strings.isEmpty(record.remarks)}" style="font-size: 0.875rem; color: var(--text-secondary); padding-top: 8px; border-top: 1px solid var(--border);">
+                                    <span style="font-weight: 500;">Remarks:</span> <span th:text="${record.remarks}">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div th:if="${#lists.isEmpty(records)}" class="card">
+                        <div class="empty-state">
+                            <p>No attendance records found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('attendance')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('attendance')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

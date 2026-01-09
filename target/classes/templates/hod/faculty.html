@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Faculty')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: hod-sidebar('faculty')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Faculty')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Faculty')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Faculty Members</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${facultyList != null and !facultyList.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Designation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="faculty : ${facultyList}">
+                                        <td th:text="${faculty.employeeId}">FAC001</td>
+                                        <td th:text="${faculty.user.fullName}">Name</td>
+                                        <td th:text="${faculty.designation}">Prof</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${facultyList == null or facultyList.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <h3>No faculty found</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: hod-bottom-nav('faculty')}"></nav>
+        <div th:replace="~{fragments/layout :: hod-mobile-menu('faculty')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

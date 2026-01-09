@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Register')}"></head>
+<body>
+    <div class="login-container">
+        <div class="login-card" style="max-width: 420px;">
+            <div class="login-header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <h1>Create Account</h1>
+                <p>Choose your registration type</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <a th:href="@{/register/student}" class="register-choice-card">
+                    <div class="register-choice-icon" style="background: var(--primary-bg); color: var(--primary);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <div class="register-choice-content">
+                        <h3>Student Registration</h3>
+                        <p>Register with your enrollment/roll number</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="register-choice-arrow">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+                
+                <a th:href="@{/register/faculty}" class="register-choice-card">
+                    <div class="register-choice-icon" style="background: var(--success-bg); color: var(--success);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="register-choice-content">
+                        <h3>Faculty Registration</h3>
+                        <p>Register with your employee ID</p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="register-choice-arrow">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div style="margin-top: 24px; text-align: center;">
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Already have an account? 
+                    <a th:href="@{/login}" style="color: var(--primary); font-weight: 500;">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

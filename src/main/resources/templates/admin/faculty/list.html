@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Manage Faculty')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('faculty')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Faculty')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Manage Faculty')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Faculty Members</h3>
+                        <span class="badge badge-primary" th:text="${#lists.size(facultyList)} + ' total'">0 total</span>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${facultyList != null and !facultyList.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Role</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="faculty : ${facultyList}">
+                                        <td th:text="${faculty.employeeId}">FAC001</td>
+                                        <td th:text="${faculty.user.fullName}">Name</td>
+                                        <td th:text="${faculty.department}">Dept</td>
+                                        <td th:text="${faculty.designation}">Prof</td>
+                                        <td>
+                                            <span th:if="${faculty.user.role.name() == 'HOD'}" class="badge badge-success">HOD</span>
+                                            <span th:if="${faculty.user.role.name() == 'FACULTY'}" class="badge badge-info">Faculty</span>
+                                        </td>
+                                        <td>
+                                            <div th:if="${faculty.user.role.name() == 'FACULTY'}">
+                                                <form th:action="@{/admin/faculty/{id}/promote(id=${faculty.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Promote this faculty member to HOD?')">
+                                                        Make HOD
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div th:if="${faculty.user.role.name() == 'HOD'}">
+                                                <form th:action="@{/admin/faculty/{id}/demote(id=${faculty.id})}" method="post" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Demote this HOD to Faculty?')">
+                                                        Remove HOD
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${facultyList == null or facultyList.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <h3>No faculty members found</h3>
+                            <p>Faculty members will appear here after registration approval</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('faculty')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('faculty')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Attendance')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: faculty-sidebar('attendance')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Attendance')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Attendance')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Mark Attendance</h3>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">Subject</label>
+                                <select class="form-control">
+                                    <option value="">Select Subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}" th:text="${subject.subjectName}">Subject</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Load Students</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Student List</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <h3>Select Subject & Date</h3>
+                            <p>Choose a subject and date to mark attendance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: faculty-bottom-nav('attendance')}"></nav>
+        <div th:replace="~{fragments/layout :: faculty-mobile-menu('attendance')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

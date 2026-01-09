@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Students')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: faculty-sidebar('students')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Students')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Students')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Student List</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${students != null and !students.isEmpty()}" class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Roll No</th>
+                                        <th>Name</th>
+                                        <th>Dept</th>
+                                        <th>Sem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="student : ${students}">
+                                        <td th:text="${student.rollNumber}">CS001</td>
+                                        <td th:text="${student.user.fullName}">Name</td>
+                                        <td th:text="${student.department}">Dept</td>
+                                        <td th:text="${student.semester}">1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div th:if="${students == null or students.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                            <h3>No students found</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: faculty-bottom-nav('students')}"></nav>
+        <div th:replace="~{fragments/layout :: faculty-mobile-menu('students')}"></div>
+    </div>
+    <script th:replace="~{fragments/layout :: mobile-script}"></script>
+</body>
+</html>

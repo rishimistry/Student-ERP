@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Profile')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: student-sidebar('profile')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Profile')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Profile')}"></header>
+            
+            <div class="page-content">
+                <div class="card" style="max-width: 800px;">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 600;"
+                                 th:text="${#strings.substring(student.fullName, 0, 1).toUpperCase()}">J</div>
+                            <div>
+                                <h3 class="card-title" th:text="${student.fullName}">Student Name</h3>
+                                <p style="color: var(--text-secondary);" th:text="${student.rollNumber}">CS2024001</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Username</p>
+                                <p style="font-weight: 500;" th:text="${student.username}">student1</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Email</p>
+                                <p style="font-weight: 500;" th:text="${student.email}">email@example.com</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Department</p>
+                                <p style="font-weight: 500;" th:text="${student.department}">Computer Science</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Semester</p>
+                                <p style="font-weight: 500;" th:text="${student.semester}">1</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Phone</p>
+                                <p style="font-weight: 500;" th:text="${student.phone ?: 'Not provided'}">1234567890</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Date of Birth</p>
+                                <p style="font-weight: 500;" th:text="${student.dateOfBirth != null} ? ${#temporals.format(student.dateOfBirth, 'MMM dd, yyyy')} : 'Not provided'">Jan 01, 2000</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Admission Year</p>
+                                <p style="font-weight: 500;" th:text="${student.admissionYear ?: 'Not provided'}">2024</p>
+                            </div>
+                            <div>
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Guardian Name</p>
+                                <p style="font-weight: 500;" th:text="${student.guardianName ?: 'Not provided'}">Guardian</p>
+                            </div>
+                            <div style="grid-column: span 2;">
+                                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 4px;">Address</p>
+                                <p style="font-weight: 500;" th:text="${student.address ?: 'Not provided'}">Address</p>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 24px; padding: 16px; background: var(--background); border-radius: var(--radius); color: var(--text-secondary); font-size: 0.875rem;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="display: inline; vertical-align: middle; margin-right: 8px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            Contact your administrator to update your profile information.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: student-bottom-nav('profile')}"></nav>
+        <div th:replace="~{fragments/layout :: student-mobile-menu('profile')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Add Marks')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('marks')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header(${isEdit} ? 'Edit Marks' : 'Add Marks')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar(${isEdit} ? 'Edit Marks' : 'Add Marks')}"></header>
+            
+            <div class="page-content">
+                <div th:if="${error}" class="alert alert-danger">
+                    <span th:text="${error}">Error</span>
+                </div>
+                
+                <div class="card" style="max-width: 600px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Enter Marks</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${isEdit} ? @{/admin/marks/add} : @{/admin/marks/add}" th:object="${mark}" method="post">
+                            <div class="form-group">
+                                <label class="form-label" for="studentId">Student *</label>
+                                <select id="studentId" th:field="*{studentId}" class="form-control" required>
+                                    <option value="">Select Student</option>
+                                    <option th:each="student : ${students}" th:value="${student.id}" 
+                                            th:text="${student.rollNumber + ' - ' + student.user.fullName}">Student</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('studentId')}" class="form-error" th:errors="*{studentId}">Error</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="subjectId">Subject *</label>
+                                <select id="subjectId" th:field="*{subjectId}" class="form-control" required>
+                                    <option value="">Select Subject</option>
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}" 
+                                            th:text="${subject.subjectCode + ' - ' + subject.subjectName}">Subject</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('subjectId')}" class="form-error" th:errors="*{subjectId}">Error</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="examType">Exam Type *</label>
+                                <select id="examType" th:field="*{examType}" class="form-control" required>
+                                    <option value="">Select Exam Type</option>
+                                    <option value="Mid Term">Mid Term</option>
+                                    <option value="Final">Final</option>
+                                    <option value="Quiz 1">Quiz 1</option>
+                                    <option value="Quiz 2">Quiz 2</option>
+                                    <option value="Assignment">Assignment</option>
+                                    <option value="Practical">Practical</option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('examType')}" class="form-error" th:errors="*{examType}">Error</div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="marksObtained">Marks Obtained *</label>
+                                    <input type="number" id="marksObtained" th:field="*{marksObtained}" class="form-control" 
+                                           step="0.5" min="0" required placeholder="e.g., 85">
+                                    <div th:if="${#fields.hasErrors('marksObtained')}" class="form-error" th:errors="*{marksObtained}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="maxMarks">Maximum Marks *</label>
+                                    <input type="number" id="maxMarks" th:field="*{maxMarks}" class="form-control" 
+                                           step="0.5" min="1" required placeholder="e.g., 100">
+                                    <div th:if="${#fields.hasErrors('maxMarks')}" class="form-error" th:errors="*{maxMarks}">Error</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="remarks">Remarks</label>
+                                <textarea id="remarks" th:field="*{remarks}" class="form-control" rows="2" placeholder="Optional remarks"></textarea>
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                <button type="submit" class="btn btn-primary">Save Marks</button>
+                                <a th:href="@{/admin/marks}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('marks')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('marks')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

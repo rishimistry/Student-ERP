@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('dashboard')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Dashboard')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Dashboard')}"></header>
+            
+            <div class="page-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Students</h3>
+                            <div class="stat-value" th:text="${dashboard.totalStudents}">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Subjects</h3>
+                            <div class="stat-value" th:text="${dashboard.totalSubjects}">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Notices</h3>
+                            <div class="stat-value" th:text="${dashboard.totalNotices}">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Notes</h3>
+                            <div class="stat-value" th:text="${dashboard.totalNotes}">0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Notices</h3>
+                        <a th:href="@{/admin/notices/add}" class="btn btn-primary btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            New
+                        </a>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${dashboard.recentNotices != null and !dashboard.recentNotices.isEmpty()}">
+                            <div th:each="notice : ${dashboard.recentNotices}" style="padding: 14px 16px; border-bottom: 1px solid var(--border);">
+                                <div style="font-weight: 500; margin-bottom: 4px;" th:text="${notice.title}">Notice Title</div>
+                                <div style="font-size: 0.8125rem; color: var(--text-secondary);">
+                                    <span th:text="${notice.postedByName}">Admin</span> • 
+                                    <span th:text="${#temporals.format(notice.postedAt, 'MMM dd')}">Jan 01</span>
+                                    <span th:if="${notice.important}" class="badge badge-warning" style="margin-left: 8px;">Important</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${dashboard.recentNotices == null or dashboard.recentNotices.isEmpty()}" class="empty-state">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            <h3>No notices yet</h3>
+                            <p>Create your first notice</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('dashboard')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('dashboard')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

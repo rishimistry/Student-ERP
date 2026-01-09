@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- Head Fragment -->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title th:text="${title} + ' | Student Portal'">Student Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<!-- Admin Sidebar Fragment (Desktop) -->
+<nav th:fragment="admin-sidebar(activePage)" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h1>Student ERP</h1>
+        </div>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a th:href="@{/admin/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                Dashboard
+            </a>
+            <a th:href="@{/admin/registrations}" class="nav-link" th:classappend="${activePage == 'registrations'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Registrations
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <a th:href="@{/admin/students}" class="nav-link" th:classappend="${activePage == 'students'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Students
+            </a>
+            <a th:href="@{/admin/faculty}" class="nav-link" th:classappend="${activePage == 'faculty'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Faculty
+            </a>
+            <a th:href="@{/admin/subjects}" class="nav-link" th:classappend="${activePage == 'subjects'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Subjects
+            </a>
+            <a th:href="@{/admin/attendance}" class="nav-link" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Attendance
+            </a>
+            <a th:href="@{/admin/marks}" class="nav-link" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Marks
+            </a>
+            <a th:href="@{/admin/notes}" class="nav-link" th:classappend="${activePage == 'notes'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                Notes
+            </a>
+            <a th:href="@{/admin/notices}" class="nav-link" th:classappend="${activePage == 'notices'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                Notices
+            </a>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="nav-link" style="width: 100%; border: none; background: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!-- Student Sidebar Fragment (Desktop) -->
+<nav th:fragment="student-sidebar(activePage)" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h1>Student Portal</h1>
+        </div>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a th:href="@{/student/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                Dashboard
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Academics</div>
+            <a th:href="@{/student/attendance}" class="nav-link" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Attendance
+            </a>
+            <a th:href="@{/student/marks}" class="nav-link" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Marks
+            </a>
+            <a th:href="@{/student/notes}" class="nav-link" th:classappend="${activePage == 'notes'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                Notes
+            </a>
+            <a th:href="@{/student/notices}" class="nav-link" th:classappend="${activePage == 'notices'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                Notices
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a th:href="@{/student/profile}" class="nav-link" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profile
+            </a>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="nav-link" style="width: 100%; border: none; background: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!-- Top Navbar Fragment (Desktop) -->
+<header th:fragment="top-navbar(pageTitle)" class="top-navbar">
+    <h2 class="page-title" th:text="${pageTitle}">Page Title</h2>
+    <div class="user-menu">
+        <div class="user-info">
+            <div class="user-name" sec:authentication="name">User</div>
+            <div class="user-role" sec:authorize="hasRole('ADMIN')">Administrator</div>
+            <div class="user-role" sec:authorize="hasRole('HOD')">Head of Department</div>
+            <div class="user-role" sec:authorize="hasRole('FACULTY')">Faculty</div>
+            <div class="user-role" sec:authorize="hasRole('STUDENT')">Student</div>
+        </div>
+        <div class="user-avatar">U</div>
+    </div>
+</header>
+
+<!-- Mobile Header Fragment -->
+<header th:fragment="mobile-header(pageTitle)" class="mobile-header">
+    <span class="mobile-header-title" th:text="${pageTitle}">Page Title</span>
+    <div class="mobile-header-avatar">U</div>
+</header>
+
+
+<!-- Admin Bottom Navigation (Mobile) -->
+<nav th:fragment="admin-bottom-nav(activePage)" class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a th:href="@{/admin/dashboard}" class="bottom-nav-item" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </a>
+        <a th:href="@{/admin/students}" class="bottom-nav-item" th:classappend="${activePage == 'students'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Students</span>
+        </a>
+        <a th:href="@{/admin/attendance}" class="bottom-nav-item" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Attendance</span>
+        </a>
+        <a th:href="@{/admin/marks}" class="bottom-nav-item" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Marks</span>
+        </a>
+        <button class="bottom-nav-item" onclick="openMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            <span>More</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Admin Mobile Menu -->
+<div th:fragment="admin-mobile-menu(activePage)" class="mobile-menu-overlay" id="mobileMenu" onclick="closeMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+        <div class="mobile-menu-handle"></div>
+        <div class="mobile-menu-header">
+            <h3>More Options</h3>
+        </div>
+        <a th:href="@{/admin/registrations}" class="mobile-menu-item" th:classappend="${activePage == 'registrations'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Registrations
+        </a>
+        <a th:href="@{/admin/faculty}" class="mobile-menu-item" th:classappend="${activePage == 'faculty'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Faculty
+        </a>
+        <a th:href="@{/admin/subjects}" class="mobile-menu-item" th:classappend="${activePage == 'subjects'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Subjects
+        </a>
+        <a th:href="@{/admin/notes}" class="mobile-menu-item" th:classappend="${activePage == 'notes'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            Notes
+        </a>
+        <a th:href="@{/admin/notices}" class="mobile-menu-item" th:classappend="${activePage == 'notices'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Notices
+        </a>
+        <div class="mobile-menu-divider"></div>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="mobile-menu-item danger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Student Bottom Navigation (Mobile) -->
+<nav th:fragment="student-bottom-nav(activePage)" class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a th:href="@{/student/dashboard}" class="bottom-nav-item" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </a>
+        <a th:href="@{/student/attendance}" class="bottom-nav-item" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Attendance</span>
+        </a>
+        <a th:href="@{/student/marks}" class="bottom-nav-item" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Marks</span>
+        </a>
+        <a th:href="@{/student/profile}" class="bottom-nav-item" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+        </a>
+        <button class="bottom-nav-item" onclick="openMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            <span>More</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Student Mobile Menu -->
+<div th:fragment="student-mobile-menu(activePage)" class="mobile-menu-overlay" id="mobileMenu" onclick="closeMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+        <div class="mobile-menu-handle"></div>
+        <div class="mobile-menu-header">
+            <h3>More Options</h3>
+        </div>
+        <a th:href="@{/student/notes}" class="mobile-menu-item" th:classappend="${activePage == 'notes'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            Notes
+        </a>
+        <a th:href="@{/student/notices}" class="mobile-menu-item" th:classappend="${activePage == 'notices'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Notices
+        </a>
+        <div class="mobile-menu-divider"></div>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="mobile-menu-item danger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Faculty Sidebar Fragment (Desktop) -->
+<nav th:fragment="faculty-sidebar(activePage)" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h1>Faculty Portal</h1>
+        </div>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a th:href="@{/faculty/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                Dashboard
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Management</div>
+            <a th:href="@{/faculty/students}" class="nav-link" th:classappend="${activePage == 'students'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Students
+            </a>
+            <a th:href="@{/faculty/attendance}" class="nav-link" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Attendance
+            </a>
+            <a th:href="@{/faculty/marks}" class="nav-link" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                Marks
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a th:href="@{/faculty/profile}" class="nav-link" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profile
+            </a>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="nav-link" style="width: 100%; border: none; background: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!-- Faculty Bottom Navigation (Mobile) -->
+<nav th:fragment="faculty-bottom-nav(activePage)" class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a th:href="@{/faculty/dashboard}" class="bottom-nav-item" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </a>
+        <a th:href="@{/faculty/students}" class="bottom-nav-item" th:classappend="${activePage == 'students'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Students</span>
+        </a>
+        <a th:href="@{/faculty/attendance}" class="bottom-nav-item" th:classappend="${activePage == 'attendance'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Attendance</span>
+        </a>
+        <a th:href="@{/faculty/marks}" class="bottom-nav-item" th:classappend="${activePage == 'marks'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>Marks</span>
+        </a>
+        <button class="bottom-nav-item" onclick="openMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            <span>More</span>
+        </button>
+    </div>
+</nav>
+
+<!-- Faculty Mobile Menu -->
+<div th:fragment="faculty-mobile-menu(activePage)" class="mobile-menu-overlay" id="mobileMenu" onclick="closeMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+        <div class="mobile-menu-handle"></div>
+        <div class="mobile-menu-header">
+            <h3>More Options</h3>
+        </div>
+        <a th:href="@{/faculty/profile}" class="mobile-menu-item" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+        </a>
+        <div class="mobile-menu-divider"></div>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="mobile-menu-item danger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- HOD Sidebar Fragment (Desktop) -->
+<nav th:fragment="hod-sidebar(activePage)" class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+            <h1>HOD Portal</h1>
+        </div>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-section-title">Main</div>
+            <a th:href="@{/hod/dashboard}" class="nav-link" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                Dashboard
+            </a>
+            <a th:href="@{/hod/registrations}" class="nav-link" th:classappend="${activePage == 'registrations'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                Registrations
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Department</div>
+            <a th:href="@{/hod/faculty}" class="nav-link" th:classappend="${activePage == 'faculty'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Faculty
+            </a>
+            <a th:href="@{/hod/students}" class="nav-link" th:classappend="${activePage == 'students'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Students
+            </a>
+            <a th:href="@{/hod/subjects}" class="nav-link" th:classappend="${activePage == 'subjects'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Subjects
+            </a>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">Account</div>
+            <a th:href="@{/hod/profile}" class="nav-link" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Profile
+            </a>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="nav-link" style="width: 100%; border: none; background: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!-- HOD Bottom Navigation (Mobile) -->
+<nav th:fragment="hod-bottom-nav(activePage)" class="bottom-nav">
+    <div class="bottom-nav-inner">
+        <a th:href="@{/hod/dashboard}" class="bottom-nav-item" th:classappend="${activePage == 'dashboard'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Home</span>
+        </a>
+        <a th:href="@{/hod/faculty}" class="bottom-nav-item" th:classappend="${activePage == 'faculty'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Faculty</span>
+        </a>
+        <a th:href="@{/hod/students}" class="bottom-nav-item" th:classappend="${activePage == 'students'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Students</span>
+        </a>
+        <a th:href="@{/hod/subjects}" class="bottom-nav-item" th:classappend="${activePage == 'subjects'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Subjects</span>
+        </a>
+        <button class="bottom-nav-item" onclick="openMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            <span>More</span>
+        </button>
+    </div>
+</nav>
+
+<!-- HOD Mobile Menu -->
+<div th:fragment="hod-mobile-menu(activePage)" class="mobile-menu-overlay" id="mobileMenu" onclick="closeMobileMenu()">
+    <div class="mobile-menu" onclick="event.stopPropagation()">
+        <div class="mobile-menu-handle"></div>
+        <div class="mobile-menu-header">
+            <h3>More Options</h3>
+        </div>
+        <a th:href="@{/hod/registrations}" class="mobile-menu-item" th:classappend="${activePage == 'registrations'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            Registrations
+        </a>
+        <a th:href="@{/hod/subjects}" class="mobile-menu-item" th:classappend="${activePage == 'subjects'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Subjects
+        </a>
+        <a th:href="@{/hod/profile}" class="mobile-menu-item" th:classappend="${activePage == 'profile'} ? 'active' : ''">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+        </a>
+        <div class="mobile-menu-divider"></div>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="mobile-menu-item danger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Mobile Menu Script -->
+<script th:fragment="mobile-script">
+function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('active');
+    document.body.style.overflow = '';
+}
+</script>
+
+<!-- Alert Fragment -->
+<div th:fragment="alerts">
+    <div th:if="${success}" class="alert alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span th:text="${success}">Success message</span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <span th:text="${error}">Error message</span>
+    </div>
+</div>
+
+</html>

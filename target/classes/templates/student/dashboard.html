@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: student-sidebar('dashboard')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Dashboard')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Dashboard')}"></header>
+            
+            <div class="page-content">
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-size: 1.125rem; color: var(--text-secondary); font-weight: 400;">
+                        Welcome back, <span style="color: var(--text-primary); font-weight: 600;" th:text="${dashboard.studentName}">Student</span>
+                    </h2>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 4px;">
+                        <span th:text="${dashboard.department}">Department</span> • Sem <span th:text="${dashboard.semester}">1</span> • <span th:text="${dashboard.rollNumber}">CS001</span>
+                    </p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" th:classappend="${dashboard.attendancePercentage >= 75} ? 'success' : 'danger'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Attendance</h3>
+                            <div class="stat-value" th:text="${#numbers.formatDecimal(dashboard.attendancePercentage, 1, 1) + '%'}">0%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Subjects</h3>
+                            <div class="stat-value" th:text="${dashboard.totalSubjects}">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" th:classappend="${dashboard.averageMarks >= 60} ? 'success' : (${dashboard.averageMarks >= 40} ? 'warning' : 'danger')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Avg Marks</h3>
+                            <div class="stat-value" th:text="${#numbers.formatDecimal(dashboard.averageMarks, 1, 1) + '%'}">0%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-bottom: 16px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Attendance</h3>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${dashboard.attendanceSummary != null and !dashboard.attendanceSummary.isEmpty()}">
+                            <div th:each="item : ${dashboard.attendanceSummary}" style="margin-bottom: 16px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-weight: 500; font-size: 0.9375rem;" th:text="${item.subjectName}">Subject</span>
+                                    <span style="color: var(--text-secondary); font-size: 0.875rem;" th:text="${item.present + '/' + item.total}">0/0</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" 
+                                         th:classappend="${item.percentage >= 75} ? 'success' : (${item.percentage >= 50} ? 'warning' : 'danger')"
+                                         th:style="'width: ' + ${item.percentage} + '%'"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${dashboard.attendanceSummary == null or dashboard.attendanceSummary.isEmpty()}" class="empty-state" style="padding: 24px;">
+                            <p>No attendance records yet</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Notices</h3>
+                        <a th:href="@{/student/notices}" class="btn btn-secondary btn-sm">View All</a>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div th:if="${dashboard.recentNotices != null and !dashboard.recentNotices.isEmpty()}">
+                            <div th:each="notice : ${dashboard.recentNotices}" style="padding: 14px 16px; border-bottom: 1px solid var(--border);">
+                                <div style="font-weight: 500; margin-bottom: 4px;" th:text="${notice.title}">Notice Title</div>
+                                <div style="font-size: 0.8125rem; color: var(--text-secondary);">
+                                    <span th:text="${#temporals.format(notice.postedAt, 'MMM dd')}">Jan 01</span>
+                                    <span th:if="${notice.important}" class="badge badge-warning" style="margin-left: 8px;">Important</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${dashboard.recentNotices == null or dashboard.recentNotices.isEmpty()}" class="empty-state" style="padding: 24px;">
+                            <p>No notices available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: student-bottom-nav('dashboard')}"></nav>
+        <div th:replace="~{fragments/layout :: student-mobile-menu('dashboard')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

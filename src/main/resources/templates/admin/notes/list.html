@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Manage Notes')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('notes')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Notes')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Notes')}"></header>
+            
+            <div class="page-content">
+                <div th:replace="~{fragments/layout :: alerts}"></div>
+                
+                <!-- Header with Upload Button -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="font-size: 1.125rem; font-weight: 600;">All Notes</h3>
+                    <a th:href="@{/admin/notes/upload}" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span class="btn-text-desktop">Upload Note</span>
+                    </a>
+                </div>
+                
+                <!-- Notes List - Mobile Friendly Cards -->
+                <div th:if="${notes != null and !#lists.isEmpty(notes)}">
+                    <div th:each="note : ${notes}" class="card" style="margin-bottom: 12px;">
+                        <div class="card-body" style="padding: 16px;">
+                            <div style="display: flex; gap: 14px; align-items: flex-start;">
+                                <!-- PDF Icon -->
+                                <div style="width: 48px; height: 48px; background: var(--danger-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                </div>
+                                
+                                <!-- Content -->
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 600; font-size: 1rem; margin-bottom: 4px;" th:text="${note.title}">Note Title</div>
+                                    <div style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" th:text="${note.fileName}">file.pdf</div>
+                                    
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px;">
+                                        <span class="badge badge-primary" th:text="${note.subjectName}">Subject</span>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);" th:text="${#temporals.format(note.uploadedAt, 'MMM dd')}">Jan 01</span>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);" th:text="${#numbers.formatDecimal(note.fileSize / 1024.0, 0, 0) + ' KB'}">100 KB</span>
+                                        <span style="font-size: 0.75rem; color: var(--text-light);" th:text="'by ' + ${note.uploadedByName}">by Admin</span>
+                                    </div>
+                                    
+                                    <!-- Delete Button -->
+                                    <form th:action="@{/admin/notes/delete/{id}(id=${note.id})}" method="post" onsubmit="return confirm('Delete this note?');">
+                                        <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty State -->
+                <div th:if="${notes == null or #lists.isEmpty(notes)}" class="card">
+                    <div class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                        <h3>No notes uploaded yet</h3>
+                        <p>Upload notes for students to access</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('notes')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('notes')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

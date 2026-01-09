@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Marks')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: student-sidebar('marks')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header('Marks')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar('Marks')}"></header>
+            
+            <div class="page-content">
+                <!-- Average Score Card -->
+                <div class="stat-card" style="margin-bottom: 16px;">
+                    <div class="stat-icon" th:classappend="${averagePercentage >= 60} ? 'success' : (${averagePercentage >= 40} ? 'warning' : 'danger')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Average Score</h3>
+                        <div class="stat-value" th:text="${#numbers.formatDecimal(averagePercentage, 1, 1) + '%'}">0%</div>
+                    </div>
+                </div>
+                
+                <!-- Marks List - Mobile Friendly -->
+                <div th:if="${marks != null and !#lists.isEmpty(marks)}">
+                    <div th:each="mark : ${marks}" class="card" style="margin-bottom: 12px;">
+                        <div class="card-body" style="padding: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; font-size: 1rem; margin-bottom: 4px;" th:text="${mark.subjectName}">Subject</div>
+                                    <div style="font-size: 0.8125rem; color: var(--text-secondary);" th:text="${mark.examType}">Mid Term</div>
+                                </div>
+                                <span class="badge" 
+                                      th:classappend="${mark.percentage >= 90} ? 'badge-success' : (${mark.percentage >= 75} ? 'badge-info' : (${mark.percentage >= 60} ? 'badge-primary' : (${mark.percentage >= 40} ? 'badge-warning' : 'badge-danger')))"
+                                      th:text="${mark.percentage >= 90} ? 'A+' : (${mark.percentage >= 80} ? 'A' : (${mark.percentage >= 70} ? 'B+' : (${mark.percentage >= 60} ? 'B' : (${mark.percentage >= 50} ? 'C' : (${mark.percentage >= 40} ? 'D' : 'F')))))">A</span>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">Marks</span>
+                                <span style="font-weight: 600;" th:text="${mark.marksObtained + ' / ' + mark.maxMarks}">85 / 100</span>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="progress" style="flex: 1;">
+                                    <div class="progress-bar" 
+                                         th:classappend="${mark.percentage >= 60} ? 'success' : (${mark.percentage >= 40} ? 'warning' : 'danger')"
+                                         th:style="'width: ' + ${mark.percentage} + '%'"></div>
+                                </div>
+                                <span style="font-size: 0.875rem; font-weight: 500; min-width: 45px; text-align: right;" th:text="${#numbers.formatDecimal(mark.percentage, 1, 1) + '%'}">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty State -->
+                <div th:if="${marks == null or #lists.isEmpty(marks)}" class="card">
+                    <div class="empty-state">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <h3>No marks available</h3>
+                        <p>Your marks will appear here once entered</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: student-bottom-nav('marks')}"></nav>
+        <div th:replace="~{fragments/layout :: student-mobile-menu('marks')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

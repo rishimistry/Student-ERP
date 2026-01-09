@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${isEdit != null and isEdit} ? 'Edit Student' : 'Add Student')}"></head>
+<body>
+    <div class="app-container">
+        <nav th:replace="~{fragments/layout :: admin-sidebar('students')}"></nav>
+        
+        <main class="main-content">
+            <header th:replace="~{fragments/layout :: mobile-header(${isEdit != null and isEdit} ? 'Edit Student' : 'Add Student')}"></header>
+            <header th:replace="~{fragments/layout :: top-navbar(${isEdit != null and isEdit} ? 'Edit Student' : 'Add Student')}"></header>
+            
+            <div class="page-content">
+                <div class="card" style="max-width: 800px;">
+                    <div class="card-header">
+                        <h3 class="card-title" th:text="${isEdit != null and isEdit} ? 'Edit Student Details' : 'New Student Registration'">Student Form</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${isEdit != null and isEdit} ? @{/admin/students/edit/{id}(id=${student.id})} : @{/admin/students/add}" 
+                              th:object="${student}" method="post">
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="username">Username *</label>
+                                    <input type="text" id="username" th:field="*{username}" class="form-control" 
+                                           th:readonly="${isEdit != null and isEdit}" placeholder="Enter username">
+                                    <div th:if="${#fields.hasErrors('username')}" class="form-error" th:errors="*{username}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="password" th:text="${isEdit != null and isEdit} ? 'New Password (leave blank to keep current)' : 'Password *'">Password</label>
+                                    <input type="password" id="password" th:field="*{password}" class="form-control" 
+                                           th:required="${isEdit == null or !isEdit}" placeholder="Enter password">
+                                    <div th:if="${#fields.hasErrors('password')}" class="form-error" th:errors="*{password}">Error</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="fullName">Full Name *</label>
+                                    <input type="text" id="fullName" th:field="*{fullName}" class="form-control" placeholder="Enter full name">
+                                    <div th:if="${#fields.hasErrors('fullName')}" class="form-error" th:errors="*{fullName}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email *</label>
+                                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter email">
+                                    <div th:if="${#fields.hasErrors('email')}" class="form-error" th:errors="*{email}">Error</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="rollNumber">Roll Number *</label>
+                                    <input type="text" id="rollNumber" th:field="*{rollNumber}" class="form-control" 
+                                           th:readonly="${isEdit != null and isEdit}" placeholder="e.g., CS2024001">
+                                    <div th:if="${#fields.hasErrors('rollNumber')}" class="form-error" th:errors="*{rollNumber}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="dateOfBirth">Date of Birth</label>
+                                    <input type="date" id="dateOfBirth" th:field="*{dateOfBirth}" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="department">Department *</label>
+                                    <select id="department" th:field="*{department}" class="form-control">
+                                        <option value="">Select Department</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        <option value="Chemical Engineering">Chemical Engineering</option>
+                                        <option value="Electrical Engineering">Electrical Engineering</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('department')}" class="form-error" th:errors="*{department}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="semester">Semester *</label>
+                                    <select id="semester" th:field="*{semester}" class="form-control">
+                                        <option value="">Select Semester</option>
+                                        <option th:each="i : ${#numbers.sequence(1, 8)}" th:value="${i}" th:text="${i}">1</option>
+                                    </select>
+                                    <div th:if="${#fields.hasErrors('semester')}" class="form-error" th:errors="*{semester}">Error</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="phone">Phone</label>
+                                    <input type="tel" id="phone" th:field="*{phone}" class="form-control" placeholder="Enter phone number">
+                                    <div th:if="${#fields.hasErrors('phone')}" class="form-error" th:errors="*{phone}">Error</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="admissionYear">Admission Year</label>
+                                    <input type="number" id="admissionYear" th:field="*{admissionYear}" class="form-control" 
+                                           min="2000" max="2030" placeholder="e.g., 2024">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="address">Address</label>
+                                <textarea id="address" th:field="*{address}" class="form-control" rows="2" placeholder="Enter address"></textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="guardianName">Guardian Name</label>
+                                    <input type="text" id="guardianName" th:field="*{guardianName}" class="form-control" placeholder="Enter guardian name">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="guardianPhone">Guardian Phone</label>
+                                    <input type="tel" id="guardianPhone" th:field="*{guardianPhone}" class="form-control" placeholder="Enter guardian phone">
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                <button type="submit" class="btn btn-primary" th:text="${isEdit != null and isEdit} ? 'Update Student' : 'Add Student'">Save</button>
+                                <a th:href="@{/admin/students}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav th:replace="~{fragments/layout :: admin-bottom-nav('students')}"></nav>
+        <div th:replace="~{fragments/layout :: admin-mobile-menu('students')}"></div>
+    </div>
+    <th:block th:replace="~{fragments/layout :: mobile-script}"></th:block>
+</body>
+</html>

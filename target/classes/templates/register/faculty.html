@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Faculty Registration')}"></head>
+<body>
+    <div class="login-container" style="padding: 20px;">
+        <div class="login-card" style="max-width: 500px;">
+            <div class="login-header">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <h1>Faculty Registration</h1>
+                <p>Create your faculty account</p>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                <span th:text="${error}">Error</span>
+            </div>
+            
+            <form th:action="@{/register/faculty}" method="post" th:object="${registration}">
+                <div class="form-section">
+                    <h4 style="margin-bottom: 12px; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Personal Information</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" th:field="*{email}" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" th:field="*{phone}" class="form-control" placeholder="Phone number">
+                    </div>
+                </div>
+                
+                <div class="form-section" style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 12px; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Professional Information</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Employee ID *</label>
+                        <input type="text" th:field="*{employeeId}" class="form-control" placeholder="e.g., FAC001" required>
+                        <small style="color: var(--text-secondary); font-size: 0.75rem;">This will be your username for login</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Department *</label>
+                            <select th:field="*{department}" class="form-control" required>
+                                <option value="">Select Department</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Chemical Engineering">Chemical Engineering</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Designation *</label>
+                            <select th:field="*{designation}" class="form-control" required>
+                                <option value="">Select Designation</option>
+                                <option value="Assistant Professor">Assistant Professor</option>
+                                <option value="Associate Professor">Associate Professor</option>
+                                <option value="Professor">Professor</option>
+                                <option value="Lecturer">Lecturer</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Specialization</label>
+                            <input type="text" th:field="*{specialization}" class="form-control" placeholder="e.g., Machine Learning">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Qualification</label>
+                            <select th:field="*{qualification}" class="form-control">
+                                <option value="">Select Qualification</option>
+                                <option value="Ph.D">Ph.D</option>
+                                <option value="M.Tech">M.Tech</option>
+                                <option value="M.E">M.E</option>
+                                <option value="M.Sc">M.Sc</option>
+                                <option value="MBA">MBA</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Date of Joining</label>
+                        <input type="date" th:field="*{dateOfJoining}" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-section" style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 12px; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Account Security</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password *</label>
+                        <input type="password" th:field="*{password}" class="form-control" placeholder="Minimum 6 characters" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <input type="password" th:field="*{confirmPassword}" class="form-control" placeholder="Re-enter password" required>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info" style="margin-top: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>Your account will require administrator approval before you can login.</span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Create Account</button>
+            </form>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                    Already have an account? 
+                    <a th:href="@{/login}" style="color: var(--primary); font-weight: 500;">Sign In</a>
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 8px;">
+                    <a th:href="@{/register}" style="color: var(--text-secondary);">← Back to registration options</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
